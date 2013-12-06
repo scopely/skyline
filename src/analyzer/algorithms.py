@@ -18,12 +18,13 @@ from settings import (
     REDIS_SOCKET_PATH,
     ENABLE_SECOND_ORDER,
     BOREDOM_SET_SIZE,
+    REDIS_HOST
 )
 
 from algorithm_exceptions import *
 
 logger = logging.getLogger("AnalyzerLog")
-redis_conn = StrictRedis(unix_socket_path=REDIS_SOCKET_PATH)
+redis_conn = StrictRedis(host=REDIS_HOST)
 
 """
 This is no man's land. Do anything you want in here,
