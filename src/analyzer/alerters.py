@@ -46,6 +46,18 @@ def alert_smtp(alert, metric):
         s.sendmail(sender, recipient, msg.as_string())
         s.quit()
 
+def alert_mailgun(alert, metric):
+   import requests
+   from requests.auth import HTTPBasicAuth
+   link = '%s/render/?width=588&height=308&target=%s' % (settings.GRAPHITE_HOST, metric[1])
+   content = 'Anomalous value: %s <br> Next alert in: %s seconds <a href="%s"><img src="%s"/></a>' % (metric[0], alert[2], link, link)
+   recipents = settings.MAILGUN_OPTS["recipents"]
+   for recipent in recipents:
+       payload = {"from"    : "Scopely Web Operations <alerts@email.scopely.io>",
+                  "to"      : "diptanu@scopely.com",
+                  "subject" : "Graphite Alert",
+                  "text"    : content}
+       requests.post(settings.MAILGUN_OPTS["url"] , auth = HTTPBasicAuth("api", settings.MAILGUN_OPTS["api_key"]), data = payload)
 
 def alert_pagerduty(alert, metric):
     import pygerduty
