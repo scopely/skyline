@@ -5,6 +5,9 @@ Shared settings
 # The path for the Redis unix socket
 REDIS_SOCKET_PATH = '/tmp/redis.sock'
 
+#The Redis Host
+REDIS_HOST = 'redis-horizon.miifff.0001.use1.cache.amazonaws.com'
+
 # The Skyline logs directory. Do not include a trailing slash.
 LOG_PATH = '/var/log/skyline'
 

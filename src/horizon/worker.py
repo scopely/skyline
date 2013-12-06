@@ -19,7 +19,7 @@ class Worker(Process):
     """
     def __init__(self, queue, parent_pid, skip_mini, canary=False):
         super(Worker, self).__init__()
-        self.redis_conn = StrictRedis(unix_socket_path = settings.REDIS_SOCKET_PATH)
+        self.redis_conn = StrictRedis(host = settings.REDIS_HOST)
         self.q = queue
         self.parent_pid = parent_pid
         self.daemon = True

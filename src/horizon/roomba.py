@@ -18,7 +18,7 @@ class Roomba(Thread):
     """
     def __init__(self, parent_pid, skip_mini):
         super(Roomba, self).__init__()
-        self.redis_conn = StrictRedis(unix_socket_path = settings.REDIS_SOCKET_PATH)
+        self.redis_conn = StrictRedis(host = settings.REDIS_HOST)
         self.daemon = True
         self.parent_pid = parent_pid
         self.skip_mini = skip_mini
