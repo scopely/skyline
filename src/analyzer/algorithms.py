@@ -229,6 +229,8 @@ def ks_test(timeseries):
 
     return False
 
+def threshold_test(timeseries):
+    pass
 
 def is_anomalously_anomalous(metric_name, ensemble, datapoint):
     """

@@ -53,6 +53,7 @@ Analyzer settings
 # This is the location the Skyline agent will write the anomalies file to disk.
 # It needs to be in a location accessible to the webapp.
 ANOMALY_DUMP = 'webapp/static/dump/anomalies.json'
+ANOMALY_DUMP_DIRECTORY = 'webapp/static/dump/'
 
 # This is the number of processes that the Skyline analyzer will spawn.
 # Analysis is a very CPU-intensive procedure. You will see optimal results
