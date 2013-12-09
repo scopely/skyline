@@ -203,14 +203,14 @@ class Analyzer(Thread):
                                 logger.error("couldn't send alert: %s" % e)
 
             # Write anomalous_metrics to static webapp directory
-            file_name = 'anomaly.json'
+            file_name = 'anomalies.json'
             filename = path.abspath(path.join(path.dirname(__file__), '..',
                 settings.ANOMALY_DUMP_DIRECTORY, file_name))
             with open(filename, 'a') as fh:
                 # Make it JSONP with a handle_data() function
                 anomalous_metrics = list(self.anomalous_metrics)
                 anomalous_metrics.sort(key=operator.itemgetter(1))
-                fh.write('handle_data(%s)' % anomalous_metrics)
+                fh.write('handle_data(%s);' % anomalous_metrics)
 
             # Log progress
             logger.info('seconds to run    :: %.2f' % (time() - now))
