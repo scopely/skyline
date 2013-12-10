@@ -45,6 +45,13 @@ class Worker(Process):
 
         return False
 
+    def in_receive_list(self, metric_name):
+        for to_receive in settings.RECEIVE_LIST:
+            if to_receive in metric_name:
+                return True
+
+        return False
+
     def send_graphite_metric(self, name, value):
         if settings.GRAPHITE_HOST != '':
             sock = socket.socket()
@@ -88,8 +95,12 @@ class Worker(Process):
                 for metric in chunk:
 
                     # Check if we should skip it
-                    if self.in_skip_list(metric[0]):
+                    #if self.in_skip_list(metric[0]):
+                    #    continue
+
+                    if not self.in_receive_list(metric[0]):
                         continue
+
 
                     # Bad data coming in
                     if metric[1][0] < now - MAX_RESOLUTION:
