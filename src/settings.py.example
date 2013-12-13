@@ -115,7 +115,7 @@ ENABLE_SECOND_ORDER = False
 ENABLE_ALERTS = True
 
 AGGREGATED_METRIC = [
-     'sumSeries(stats.WithBuddies.Api.GameTurn.*.*.*.*)'
+     'keepLastValue(sumSeries(stats.WithBuddies.Api.GameTurn.*.*.*.*))'
 ]
 
 # This is the config for which metrics to alert on and which strategy to use for each.
