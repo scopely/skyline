@@ -114,6 +114,10 @@ ENABLE_SECOND_ORDER = False
 # This enables alerting.
 ENABLE_ALERTS = True
 
+AGGREGATED_METRIC = [
+     'sumSeries(stats.WithBuddies.Api.GameTurn.*.*.*.*)'
+]
+
 # This is the config for which metrics to alert on and which strategy to use for each.
 # Alerts will not fire twice within EXPIRATION_TIME, even if they trigger again.
 # Schema: (

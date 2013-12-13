@@ -16,6 +16,7 @@ import settings
 from alerters import trigger_alert
 from algorithms import run_selected_algorithm
 from algorithm_exceptions import *
+from graphite import Graphite
 
 logger = logging.getLogger("AnalyzerLog")
 
@@ -118,6 +119,32 @@ class Analyzer(Thread):
                 exceptions['Other'] += 1
                 logger.info(traceback.format_exc())
 
+        for i, metric_name in enumerate(settings.AGGREGATED_METRIC):
+            g = Graphite(metric_name)
+            time_series = g.time_series("-24h")
+            try:
+                anomalous, ensemble, datapoint = run_selected_algorithm(timeseries, metric_name)
+                if anomalous:
+                    base_name = metric_name.replace(settings.FULL_NAMESPACE, '', 1)
+                    metric = [datapoint, base_name]
+                    self.anomalous_metrics.append(metric)
+
+                    # Get the anomaly breakdown - who returned True?
+                    for index, value in enumerate(ensemble):
+                        if value:
+                            algorithm = settings.ALGORITHMS[index]
+                            anomaly_breakdown[algorithm] += 1
+
+            except TooShort:
+                exceptions['TooShort'] += 1
+            except Stale:
+                exceptions['Stale'] += 1
+            except Boring:
+                exceptions['Boring'] += 1
+            except:
+                exceptions['Other'] += 1
+                logger.info(traceback.format_exc())
+
         # Add values to the queue so the parent process can collate
         for key, value in anomaly_breakdown.items():
             self.anomaly_breakdown_q.put((key, value))
@@ -210,7 +237,7 @@ class Analyzer(Thread):
                 # Make it JSONP with a handle_data() function
                 anomalous_metrics = list(self.anomalous_metrics)
                 anomalous_metrics.sort(key=operator.itemgetter(1))
-                fh.write('handle_data(%s);' % anomalous_metrics)
+                fh.write('handle_data(%s)' % anomalous_metrics)
 
             # Log progress
             logger.info('seconds to run    :: %.2f' % (time() - now))
