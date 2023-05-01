@@ -1,7 +1,7 @@
 redis==2.7.2
 hiredis==0.1.1
 python-daemon==1.6
-flask==0.9
+flask==2.3.2
 simplejson==2.0.9
 unittest2
 mock
